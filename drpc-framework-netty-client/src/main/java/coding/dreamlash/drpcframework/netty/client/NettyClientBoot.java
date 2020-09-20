@@ -42,7 +42,6 @@ public class NettyClientBoot {
     }
 
     public Channel doConnect(String host, int port) throws InterruptedException, ExecutionException {
-        System.out.println("start" + host + ":" + port);
         CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
         bootstrap.connect(host, port).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
@@ -54,7 +53,6 @@ public class NettyClientBoot {
                 throw new IllegalStateException();
             }
         });
-        System.out.println("end" + host + ":" + port);
         return completableFuture.get();
     }
 
