@@ -1,1 +1,2 @@
-"# drpc-framework" 
+# drpc-framework
+dprc-framework是基于naocs服务发现中心和netty做一个简易的rpc框架
