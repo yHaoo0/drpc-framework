@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>drpc-framework</artifactId>
+        <groupId>coding.dream-lash</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>drpc-framework-netty-service</artifactId>
+    <description>drpc，netty为实现的服务端部分</description>
+    <developers>
+        <developer>
+            <id>yhao</id>
+            <name>yhao</name>
+            <email>673067630@qq.com</email>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>coding.dream-lash</groupId>
+            <artifactId>drpc-framework-rpc-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>coding.dream-lash</groupId>
+            <artifactId>drpc-framework-netty-kryo</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+    </dependencies>
+</project>
