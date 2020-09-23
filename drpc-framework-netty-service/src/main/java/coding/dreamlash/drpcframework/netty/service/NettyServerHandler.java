@@ -67,6 +67,11 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
     }
 
+    /**
+     * RPC请求信息动作
+     * @param ctx
+     * @param request
+     */
     private void rpcRequestHandler(ChannelHandlerContext ctx, RpcRequest request){
         Object result = null;
         RpcResponse<Object> response;
@@ -88,11 +93,24 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         log.debug("Return response:" + response.getMessage());
     }
 
+    /**
+     * RPC 心跳动作
+     * @param ctx
+     * @param request
+     */
     private void rpcHeartBeatHandler(ChannelHandlerContext ctx, RpcRequest request){
         log.debug("Heart Beat");
         return;
     }
 
+    /**
+     * 基于反射获取响应体数据
+     * @param request
+     * @return
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     private Object invokeTargetMethod(RpcRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Object result;
         Object service = provider.getService(request.toRpcServiceProperties());

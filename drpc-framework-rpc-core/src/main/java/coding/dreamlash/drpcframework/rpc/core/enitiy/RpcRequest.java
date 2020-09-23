@@ -2,6 +2,11 @@ package coding.dreamlash.drpcframework.rpc.core.enitiy;
 
 import java.io.Serializable;
 
+/**
+ * 请求体
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class RpcRequest implements Serializable {
     private static final long serialVersionUID = -1628053665403326240L;
     private String version; // 版本
@@ -28,6 +33,10 @@ public class RpcRequest implements Serializable {
         this.type = type;
     }
 
+    /**
+     * 从该请求信息中获取服务属性
+     * @return
+     */
     public RpcServiceProperties toRpcServiceProperties(){
         return new RpcServiceProperties(serviceName, version, group);
     }

@@ -11,6 +11,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * 响应体临时存储
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class ResponseProvider {
     private static Logger log = LogManager.getLogger();
     private final Map<String, CompletableFuture<RpcResponse<Object>>> stroe;
@@ -19,6 +24,11 @@ public class ResponseProvider {
         stroe = new ConcurrentHashMap<>();
     }
 
+    /**
+     * 标志响应体完成
+     * @param requestId
+     * @param futur
+     */
     public void creat(String requestId, CompletableFuture<RpcResponse<Object>> futur) {
         stroe.put(requestId, futur);
         log.printf(Level.DEBUG, "creat Completable futur : [requestId: %s]", requestId);
@@ -28,13 +38,6 @@ public class ResponseProvider {
         CompletableFuture<RpcResponse<Object>> future = stroe.get(response.getRequestId());
         future.complete(response);
         log.printf(Level.DEBUG, "response complete : [requestId: %s]", response.getRequestId());
-    }
-
-    public RpcResponse getAndRemove(String requestId) throws ExecutionException, InterruptedException {
-        CompletableFuture<RpcResponse<Object>> future = stroe.remove(requestId);
-        RpcResponse<Object> response = future.get();
-        log.printf(Level.DEBUG, "response release : [requestId: %s]", response.getRequestId());
-        return response;
     }
 
     public void remove(String requestId){

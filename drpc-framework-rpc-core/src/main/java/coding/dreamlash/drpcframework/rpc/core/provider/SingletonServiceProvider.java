@@ -8,6 +8,11 @@ import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 单例模式服务提供者
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class SingletonServiceProvider extends ServiceProvider{
     private Map<String, Object> serviceMap;
 
@@ -25,6 +30,11 @@ public class SingletonServiceProvider extends ServiceProvider{
         return result;
     }
 
+    /**
+     * 存储以及发布服务
+     * @param rpcServiceProperties 服务属性
+     * @param service 服务实体
+     */
     public void publishService(RpcServiceProperties rpcServiceProperties, Object service) {
         boolean sucess;
         String serviceName = rpcServiceProperties.toString();

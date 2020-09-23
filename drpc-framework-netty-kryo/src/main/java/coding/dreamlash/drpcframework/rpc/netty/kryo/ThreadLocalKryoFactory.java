@@ -12,6 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Kryo序列化对象工厂
+ * @author yhao
+ * @creatdDate 2020-9-23
+ */
 public class ThreadLocalKryoFactory {
     private final ThreadLocal<Kryo> holder = new ThreadLocal<Kryo>() {
         @Override

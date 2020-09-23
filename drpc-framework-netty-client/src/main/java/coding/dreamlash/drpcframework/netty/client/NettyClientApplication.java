@@ -12,6 +12,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
 
+/**
+ * Drpc 客户端启动的封装
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class NettyClientApplication implements RpcClientApplication{
     private static Logger logger = LogManager.getLogger();
     private boolean isEnable = false;

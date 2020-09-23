@@ -18,6 +18,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Netty客户端启动
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class NettyClientBoot {
     private static Logger log = LogManager.getLogger();
     private Bootstrap bootstrap = new Bootstrap();
@@ -41,6 +46,14 @@ public class NettyClientBoot {
         log.info("Netty Client BootStrap initialized finally");
     }
 
+    /**
+     * Channel 链接
+     * @param host
+     * @param port
+     * @return
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public Channel doConnect(String host, int port) throws InterruptedException, ExecutionException {
         CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
         bootstrap.connect(host, port).addListener((ChannelFutureListener) future -> {
@@ -56,6 +69,9 @@ public class NettyClientBoot {
         return completableFuture.get();
     }
 
+    /**
+     * 关闭客户端监听
+     */
     public void shutdown(){
         group.shutdownGracefully();
     }

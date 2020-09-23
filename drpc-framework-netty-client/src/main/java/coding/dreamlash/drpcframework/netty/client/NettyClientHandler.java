@@ -12,6 +12,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
 
+/**
+ * netty 通信动作
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     private static Logger log = LogManager.getLogger();
     private final ResponseProvider responseProvider;

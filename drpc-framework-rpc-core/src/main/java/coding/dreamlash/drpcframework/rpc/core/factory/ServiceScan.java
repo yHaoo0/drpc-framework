@@ -12,9 +12,19 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * 客户端服务实体，以及服务信息等的扫描
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class ServiceScan {
     private static final Logger log = LogManager.getLogger();
 
+    /**
+     * 单例模式下的扫描处理
+     * @param factory 实体工厂类
+     * @param provider 单例模式的提供者
+     */
     public static void scan(Object factory, SingletonServiceProvider provider){
         for(Method method: factory.getClass().getMethods()){
 
@@ -36,6 +46,11 @@ public class ServiceScan {
         }
     }
 
+    /**
+     * 单例模式下的扫描处理
+     * @param factory 实体工厂类
+     * @param provider 工厂模式的提供者
+     */
     public static void scan(Object factory, FactoryServiceProvider provider){
         for(Method method: factory.getClass().getMethods()){
 
@@ -53,6 +68,12 @@ public class ServiceScan {
         }
     }
 
+    /**
+     * 将注解信息封装为服务属性
+     * @param annotation
+     * @param methonName
+     * @return
+     */
     private static RpcServiceProperties toRpcServiceProperties(DrpcService annotation, String methonName){
         String serviceName = annotation.serviceName().equals("") ? methonName:annotation.serviceName();
         if(annotation.group().equals("")){

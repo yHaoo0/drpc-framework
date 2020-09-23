@@ -10,9 +10,19 @@ import org.apache.logging.log4j.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * 客户端熔断实体，以及服务请求的扫描
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class ClientScan {
     private static final Logger log = LogManager.getLogger();
 
+    /**
+     * 单例模式下的扫描处理
+     * @param factory 实体工厂类
+     * @param proxy 单例模式代理
+     */
     public static void scan(Object factory, SingletonClientProxy proxy){
         log.printf(Level.INFO, "start scan ractory: %s", factory.getClass().getSimpleName());
         for(Method method: factory.getClass().getMethods()){

@@ -36,6 +36,9 @@ public class NettyServerBoot {
         this.serviceProvider = serviceProvider;
     }
 
+    /**
+     * Netty 服务端启动动作
+     */
     public void start(){
         EventLoopGroup boosGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
@@ -47,11 +50,9 @@ public class NettyServerBoot {
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .handler(new LoggingHandler(LogLevel.INFO))
-
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-
                             ch.pipeline().addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
                             ch.pipeline().addLast("decoder", new KryoDecoder());
                             ch.pipeline().addLast("encoder", new KryoEncoder());

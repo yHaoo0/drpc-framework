@@ -10,6 +10,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+/**
+ * 动态代理动作
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class ClientProxyInvokeHandler implements InvocationHandler {
     private static Logger log = LogManager.getLogger();
     private ClientTransport clientTransport;

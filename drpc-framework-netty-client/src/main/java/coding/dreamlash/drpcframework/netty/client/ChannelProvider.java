@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Channel 存储和提供类
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class ChannelProvider {
     private static Logger log = LogManager.getLogger("");
     private final Map<String, Channel> provider;
@@ -23,6 +28,12 @@ public class ChannelProvider {
         this.client = client;
     }
 
+    /**
+     * 获取Channle实例。如果没有或失效，则链接新的Channel
+     * @param host
+     * @param port
+     * @return
+     */
     public Channel get(String host, int port){
         String key = host + ":" + port;
         Channel channel = provider.get(key);

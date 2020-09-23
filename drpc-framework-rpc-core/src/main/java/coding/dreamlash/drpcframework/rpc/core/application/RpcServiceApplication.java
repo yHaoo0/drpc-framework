@@ -7,7 +7,7 @@ package coding.dreamlash.drpcframework.rpc.core.application;
  */
 public interface RpcServiceApplication {
     /**
-     * 初始化服务端，如果以及初始化，返回true， 否则开始初始化，成功返回true
+     * 注册服务，启用服务器监听
      * @return
      */
     public boolean enable(Object factory, boolean isSingleton);

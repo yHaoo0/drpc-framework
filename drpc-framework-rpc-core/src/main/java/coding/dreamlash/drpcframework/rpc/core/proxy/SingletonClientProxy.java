@@ -8,6 +8,11 @@ import org.apache.logging.log4j.Level;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 单例模式的ClientProxy实现
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class SingletonClientProxy extends ClientProxy{
     private Map<String, Object> proxyMap;
 
@@ -25,6 +30,13 @@ public class SingletonClientProxy extends ClientProxy{
         return (T) proxyMap.get(clientName);
     }
 
+    /**
+     * 登录，存储服务
+     * @param clientName
+     * @param properties
+     * @param clazz
+     * @param o
+     */
     public void putProxy(String clientName, RpcServiceProperties properties, Class clazz, Object o){
         if(proxyMap.containsValue(clientName)){
             log.warn("Duplicate client name, creating failed: " + clientName);

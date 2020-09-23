@@ -10,6 +10,11 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 工厂模式的ClientProxy实现
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class FactoryClientProxy extends ClientProxy{
     private Map<String, ProxyProperties> proxyMap;
     private Object factory;
@@ -41,6 +46,13 @@ public class FactoryClientProxy extends ClientProxy{
         }
     }
 
+    /**
+     * 登录，存储服务
+     * @param clientName
+     * @param properties
+     * @param clazz
+     * @param o
+     */
     public void putProxy(String clientName, RpcServiceProperties properties, Class clazz, Method o) {
         if (proxyMap.containsValue(clientName)) {
             log.warn("Duplicate client name, creating failed: " + clientName);

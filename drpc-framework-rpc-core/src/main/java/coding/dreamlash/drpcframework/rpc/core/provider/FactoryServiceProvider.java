@@ -10,6 +10,11 @@ import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 工厂模式服务提供者
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class FactoryServiceProvider extends ServiceProvider{
     private Map<String, Method> serviceMap;
     private Object factory;
@@ -34,6 +39,11 @@ public class FactoryServiceProvider extends ServiceProvider{
         }
     }
 
+    /**
+     * 存储以及发布服务
+     * @param rpcServiceProperties 服务属性
+     * @param service 提供服务实体方法
+     */
     public void publishService(RpcServiceProperties rpcServiceProperties, Method service) {
         boolean sucess;
         String serviceName = rpcServiceProperties.toString();

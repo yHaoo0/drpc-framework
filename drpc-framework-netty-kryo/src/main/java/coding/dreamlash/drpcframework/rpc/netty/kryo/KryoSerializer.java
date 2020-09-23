@@ -9,6 +9,11 @@ import io.netty.buffer.ByteBufInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+/**
+ * Kryo序列化实现
+ * @author yhao
+ * @createDate 2020-9-23
+ */
 public class KryoSerializer {
     private static final ThreadLocalKryoFactory factory = new ThreadLocalKryoFactory();
 
