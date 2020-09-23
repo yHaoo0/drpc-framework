@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class SimpleStartExample {
-    public static void main(String[] args) throws InterruptedException {
+        public static void main(String[] args){
         // 实例化DrpcSimpleApplication，appliction会读取`drpc.properties`文件，并创建服务中心
         DrpcSimpleApplication application = new DrpcSimpleApplication();
         // 传入工厂类登录服务，启用客户端，开始监听服务
