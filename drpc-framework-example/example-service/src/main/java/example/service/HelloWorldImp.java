@@ -1,7 +1,7 @@
 package example.service;
 
 import example.api.HelloWorld;
-
+// 接口的服务实现
 public class HelloWorldImp implements HelloWorld {
     String head;
 

@@ -11,13 +11,15 @@ import java.util.Properties;
 
 public class ServiceApplicationExample {
     public static void main(String[] args) throws IOException {
-        // properties 配置
+        // 1 properties 读取配置文件
         Properties properties = PropertiesLoaderUtils.loadProperties("test.properties");
-        // 实例化 服务中心
+        // 2.1 实例化 服务中心
         ServiceCenter serviceCenter = new NacosServicesCenter();
+        // 2.2 传入配置属性并启用服务中心
         serviceCenter.enable(properties);
-        // 实例化 服务端
+        // 3.1 实例化服务中心，传入配置属性以及服务中心
         RpcServiceApplication application = new NettyServerApplication(properties, serviceCenter);
+        // 3.2 传入工厂的实例，启动服务监听
         application.enable(new ServiceFactory("Service Application: "), true);
     }
 }

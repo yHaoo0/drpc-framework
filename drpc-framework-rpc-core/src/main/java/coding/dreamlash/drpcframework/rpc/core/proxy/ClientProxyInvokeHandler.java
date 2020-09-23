@@ -23,10 +23,7 @@ public class ClientProxyInvokeHandler implements InvocationHandler {
         this.object = object;
     }
 
-    public ClientProxyInvokeHandler(RpcServiceProperties properties, Object object) {
-        this.properties = properties;
-        this.object = object;
-    }
+
 
 
     @Override

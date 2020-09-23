@@ -25,7 +25,7 @@ public class ClientScan {
                 try {
                     if (method.getParameterCount() == 0) {
                         Object o = method.invoke(factory);
-                        proxy.putProxy(clientName, properties, inte, clientName);
+                        proxy.putProxy(clientName, properties, inte, o);
                         log.printf(Level.INFO,  "put client success: %s", annoattion.clientName());
                     } else {
                         log.printf(Level.WARN, "put client fail, DrpcClient cannot handle methods containing parameters. client:%s", clientName);
