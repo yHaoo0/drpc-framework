@@ -6,8 +6,8 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Properties;
@@ -17,7 +17,7 @@ import java.util.Properties;
  * @cretaDate 2020-9-5 20:00
  */
 public class NacosServicesCenter implements ServiceCenter {
-    private static final Logger log = LogManager.getLogger("coding.dreamlash");
+    private static final Logger log = LoggerFactory.getLogger(NacosServicesCenter.class);
     private boolean enable = false;
     private NamingService naming ;
 
@@ -30,14 +30,13 @@ public class NacosServicesCenter implements ServiceCenter {
         if(!enable){
             try {
                 naming = NamingFactory.createNamingService(nacosProperties);
-                log.info("Nacos Naming started successfully, service center ip:" + (String) nacosProperties.get("serverAddr"));
+                log.info("Nacos Naming started successfully, service center ip: {}", nacosProperties.get("serverAddr"));
                 enable = true;
             } catch (NacosException e) {
-                log.error("Nacos Naming failed to start");
-                log.error(e.getStackTrace().toString());
+                log.error("Nacos Naming failed to start", e);
             }
         } else {
-            log.error("The NacloServicesCenter starts repeatedly");
+            log.warn("The NacloServicesCenter starts repeatedly");
         }
         return enable;
     }
@@ -53,8 +52,7 @@ public class NacosServicesCenter implements ServiceCenter {
             }
             return true;
         }catch (NacosException e) {
-            log.warn("nacos exception: " + e.getMessage());
-            log.warn(e.getStackTrace().toString());
+            log.warn("nacos exception: {}\n {}", e.getMessage(), e.getStackTrace());
             return false;
         }
     }
@@ -73,8 +71,7 @@ public class NacosServicesCenter implements ServiceCenter {
             }
             result = InetSocketAddress.createUnresolved(instance.getIp(), instance.getPort());
         } catch (Exception e) {
-            log.warn("nacos exception: " + e.getMessage());
-            log.warn(e.getStackTrace().toString());
+            log.warn("nacos exception: {}\n {}", e.getMessage(), e.getStackTrace());
         }
         return result;
     }
@@ -84,8 +81,7 @@ public class NacosServicesCenter implements ServiceCenter {
         try {
             naming.deregisterInstance(toServiceName(properties), address.getHostString(), address.getPort());
         } catch (NacosException e) {
-            log.error("nacos exception: " + e.getErrMsg());
-            log.error(e.getStackTrace().toString());
+            log.warn("nacos exception: {}\n {}", e.getMessage(), e.getStackTrace());
         }
     }
 

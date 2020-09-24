@@ -14,8 +14,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @createDate 2020-09-06 08:30
  */
 public class NettyServerBoot {
-    private static Logger log = LogManager.getLogger();
+    private static Logger log = LoggerFactory.getLogger(NettyServerBoot.class);
     private InetSocketAddress socketAddress;
     private ServiceProvider serviceProvider;
 
@@ -59,14 +59,14 @@ public class NettyServerBoot {
                             ch.pipeline().addLast(new NettyServerHandler(serviceProvider));
                         }
                     });
-            log.info("The Netty server starts and starts listening. server ip:"+socketAddress.getHostString() + ":" + socketAddress.getPort());
+            log.info("The Netty server starts and starts listening. server ip: {}", socketAddress.getHostString() + ":" + socketAddress.getPort());
             ChannelFuture f = bootstrap.bind(socketAddress.getHostString(), socketAddress.getPort()).sync();
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.warn("occur coding.dreamlash.drpc_framework.rpc.core.exception when start server:");
             log.warn(e.getStackTrace().toString());
         } finally {
-            log.error("shutdown bossGroup and workerGroup");
+            log.info("shutdown bossGroup and workerGroup");
             boosGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }

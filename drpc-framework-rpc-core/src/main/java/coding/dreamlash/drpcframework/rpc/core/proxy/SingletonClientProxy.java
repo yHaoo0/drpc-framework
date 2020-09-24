@@ -4,6 +4,8 @@ import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.transport.ClientTransport;
 import org.apache.logging.log4j.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @createDate 2020-9-23
  */
 public class SingletonClientProxy extends ClientProxy{
+    private static final Logger log = LoggerFactory.getLogger(SingletonClientProxy.class);
     private Map<String, Object> proxyMap;
 
     public SingletonClientProxy(ClientTransport clientTransport) {
@@ -39,7 +42,7 @@ public class SingletonClientProxy extends ClientProxy{
      */
     public void putProxy(String clientName, RpcServiceProperties properties, Class clazz, Object o){
         if(proxyMap.containsValue(clientName)){
-            log.warn("Duplicate client name, creating failed: " + clientName);
+            log.warn("Duplicate client name, creating failed: {}", clientName);
             return;
         }
 

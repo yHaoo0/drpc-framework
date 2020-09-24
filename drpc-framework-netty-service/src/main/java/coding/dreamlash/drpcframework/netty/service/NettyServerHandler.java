@@ -10,8 +10,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
  * @createDate 2020-09-06 08:50
  */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log = LoggerFactory.getLogger(NettyServerHandler.class);
     private final ServiceProvider provider;
 
     public NettyServerHandler(ServiceProvider provider){
@@ -75,7 +75,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     private void rpcRequestHandler(ChannelHandlerContext ctx, RpcRequest request){
         Object result = null;
         RpcResponse<Object> response;
-        log.debug("Get request: " + request.toRpcServiceProperties());
+        log.debug("Get request:{}", request.toRpcServiceProperties());
         try {
             result = invokeTargetMethod(request);
             if(ctx.channel().isActive() && ctx.channel().isWritable()){
@@ -84,13 +84,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 response = RpcResponse.fail(RpcResponseCode.FAIL);
             }
         } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
-            log.warn("invoke mthod error:" + e.getMessage());
+            log.warn("invoke mthod error:{}", e.getMessage());
             log.warn(e.getStackTrace().toString());
             response = RpcResponse.fail(RpcResponseCode.INVOKE_FAIL);
         }
 
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-        log.debug("Return response:" + response.getMessage());
+        log.debug("Return response:{}", response.getMessage());
     }
 
     /**
@@ -99,7 +99,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      * @param request
      */
     private void rpcHeartBeatHandler(ChannelHandlerContext ctx, RpcRequest request){
-        log.debug("Heart Beat");
+        // log.debug("Heart Beat");
         return;
     }
 

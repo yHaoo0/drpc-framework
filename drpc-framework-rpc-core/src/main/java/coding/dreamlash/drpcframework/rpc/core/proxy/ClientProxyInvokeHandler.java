@@ -2,9 +2,8 @@ package coding.dreamlash.drpcframework.rpc.core.proxy;
 
 import coding.dreamlash.drpcframework.rpc.core.enitiy.*;
 import coding.dreamlash.drpcframework.rpc.core.transport.ClientTransport;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -16,7 +15,7 @@ import java.util.UUID;
  * @createDate 2020-9-23
  */
 public class ClientProxyInvokeHandler implements InvocationHandler {
-    private static Logger log = LogManager.getLogger();
+    private static Logger log = LoggerFactory.getLogger(ClientProxyInvokeHandler.class);
     private ClientTransport clientTransport;
     private RpcServiceProperties properties;
     private Object object;
@@ -48,7 +47,7 @@ public class ClientProxyInvokeHandler implements InvocationHandler {
         RpcResponse<Object> response = clientTransport.sendRpcRequest(rpcRequest);
         if (response == null || response.getCode() != RpcResponseCode.SUCCESS.code) {
             String message = response == null ? null : response.getMessage();
-            log.printf(Level.WARN, "service{%s} is exception for respesponse: %s",
+            log.warn("service {} is exception for respesponse: {}",
                     rpcRequest.toRpcServiceProperties().toString(), message);
             return method.invoke(object, args);
         }

@@ -10,9 +10,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -24,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @createDate 2020-9-23
  */
 public class NettyClientBoot {
-    private static Logger log = LogManager.getLogger();
+    private static Logger log = LoggerFactory.getLogger(NettyClientBoot.class);
     private Bootstrap bootstrap = new Bootstrap();
     private NioEventLoopGroup group = new NioEventLoopGroup();
 
@@ -58,7 +57,7 @@ public class NettyClientBoot {
         CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
         bootstrap.connect(host, port).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
-                log.info("The client has connected [{ " + host + port + "}] successful!");
+                log.debug("The client has connected [{}:{}] successful!", host, port);
                 completableFuture.complete(future.channel());
             } else {
                 future.cause().printStackTrace();

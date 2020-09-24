@@ -2,13 +2,10 @@ package coding.dreamlash.drpcframework.rpc.core.factory;
 
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.provider.FactoryServiceProvider;
-import coding.dreamlash.drpcframework.rpc.core.provider.ServiceProvider;
 import coding.dreamlash.drpcframework.rpc.core.provider.SingletonServiceProvider;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -18,7 +15,7 @@ import java.lang.reflect.Method;
  * @createDate 2020-9-23
  */
 public class ServiceScan {
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log = LoggerFactory.getLogger(ServiceScan.class);
 
     /**
      * 单例模式下的扫描处理
@@ -35,12 +32,12 @@ public class ServiceScan {
                 try {
                     if (method.getParameterCount() == 0) {
                         provider.publishService(serviceProperties, method.invoke(factory));
-                        log.printf(Level.INFO, "publish service sucess: %s", serviceProperties.toString());
+                        log.info("publish service sucess: {}", serviceProperties.toString());
                     } else {
-                        log.printf(Level.WARN, "publish service fail, DrpcService cannot handle methods containing parameters. service:%s", serviceProperties.toString());
+                        log.warn("publish service fail, DrpcService cannot handle methods containing parameters. service:{}", serviceProperties.toString());
                     }
                 } catch (IllegalAccessException |InvocationTargetException e) {
-                    log.printf(Level.WARN, "publish service fail, ServiceScan reflection failure. service:%s", serviceProperties.toString());
+                    log.warn("publish service fail, ServiceScan reflection failure. service:{}", serviceProperties.toString());
                 }
             }
         }
@@ -60,9 +57,9 @@ public class ServiceScan {
 
                 if(method.getParameterCount() == 0){
                     provider.publishService(serviceProperties, method);
-                    log.printf(Level.INFO, "publish service sucess: %s", serviceProperties.toString());
+                    log.info("publish service sucess: {}", serviceProperties.toString());
                 }else {
-                    log.printf(Level.WARN, "publish service fail, DrpcService cannot handle methods containing parameters. service:%s", serviceProperties.toString());
+                    log.warn("publish service fail, ServiceScan reflection failure. service:{}", serviceProperties.toString());
                 }
             }
         }

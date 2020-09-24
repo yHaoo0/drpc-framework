@@ -3,8 +3,6 @@ package coding.dreamlash.drpcframework.rpc.core.proxy;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.*;
 import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.transport.ClientTransport;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Proxy;
 
@@ -14,7 +12,6 @@ import java.lang.reflect.Proxy;
  * @createDate 2020-9-23
  */
 public abstract class ClientProxy {
-    protected static Logger log = LogManager.getLogger();
     private ClientTransport clientTransport;
 
     public ClientProxy(ClientTransport clientTransport) {

@@ -7,8 +7,8 @@ import coding.dreamlash.drpcframework.rpc.core.application.RpcClientApplication;
 import coding.dreamlash.drpcframework.rpc.core.application.RpcServiceApplication;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
 import coding.dreamlash.drpcframework.nacos.registry.NacosServicesCenter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -19,7 +19,7 @@ import java.util.Properties;
  * @createDate 2020-9-23
  */
 public class DrpcSimpleApplication {
-    private static Logger log = LogManager.getLogger();
+    private static Logger log = LoggerFactory.getLogger(DrpcSimpleApplication.class);
     private Properties properties;
     private ServiceCenter serviceCenter;
     private RpcClientApplication client;
@@ -33,8 +33,7 @@ public class DrpcSimpleApplication {
         try {
             properties = PropertiesLoaderUtils.loadProperties(propertiesName);
         } catch (IOException e) {
-            log.warn("not found drpc.properties");
-            log.error(e.getStackTrace());
+            log.error("not found drpc.properties");
         }
         serviceCenter = new NacosServicesCenter();
         serviceCenter.enable(properties);

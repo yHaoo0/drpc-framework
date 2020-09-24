@@ -2,9 +2,8 @@ package coding.dreamlash.drpcframework.netty.client;
 
 
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +15,7 @@ import java.util.concurrent.ExecutionException;
  * @createDate 2020-9-23
  */
 public class ChannelProvider {
-    private static Logger log = LogManager.getLogger("");
+    private static Logger log = LoggerFactory.getLogger(ChannelProvider.class);
     private final Map<String, Channel> provider;
     private NettyClientBoot client;
 

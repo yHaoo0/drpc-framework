@@ -6,8 +6,8 @@ import coding.dreamlash.drpcframework.rpc.core.provider.FactoryServiceProvider;
 import coding.dreamlash.drpcframework.rpc.core.provider.ServiceProvider;
 import coding.dreamlash.drpcframework.rpc.core.provider.SingletonServiceProvider;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Properties;
@@ -18,7 +18,7 @@ import java.util.Properties;
  * @creatDate 2020-09-06 08:40
  */
 public class NettyServerApplication implements RpcServiceApplication {
-    private static final Logger log = LogManager.getLogger();
+    private static final Logger log = LoggerFactory.getLogger(NettyServerApplication.class);
     ServiceCenter serviceCenter;
     ServiceProvider serviceProvider;
     NettyServerHandler serverHandler;

@@ -3,6 +3,8 @@ package coding.dreamlash.drpcframework.rpc.core.provider;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
@@ -14,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @createDate 2020-9-23
  */
 public class SingletonServiceProvider extends ServiceProvider{
+    private final static Logger log = LoggerFactory.getLogger(SingletonServiceProvider.class);
     private Map<String, Object> serviceMap;
 
     public SingletonServiceProvider(ServiceCenter serviceCenter, InetSocketAddress socketAddress) {
@@ -40,7 +43,7 @@ public class SingletonServiceProvider extends ServiceProvider{
         String serviceName = rpcServiceProperties.toString();
 
         if(serviceMap.containsKey(serviceName)){
-            log.warn("Duplicate service name, publishing failed: " + service.getClass().getName());
+            log.warn("Duplicate service name, publishing failed: {}", service.getClass().getName());
             return;
         }
 
@@ -48,9 +51,9 @@ public class SingletonServiceProvider extends ServiceProvider{
 
         if(sucess){
             serviceMap.put(serviceName, service);
-            log.info("Publishing service: "+ serviceName);
+            log.info("Publishing service: {}", serviceName);
         } else {
-            log.warn("Failed to register service with the service center: " + serviceName);
+            log.warn("Failed to register service with the service center: {}", serviceName);
         }
     }
 }

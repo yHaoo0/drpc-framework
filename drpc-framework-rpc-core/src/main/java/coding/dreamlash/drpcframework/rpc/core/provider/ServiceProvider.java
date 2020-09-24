@@ -4,11 +4,8 @@ package coding.dreamlash.drpcframework.rpc.core.provider;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import java.net.InetSocketAddress;
-import java.util.Map;
 
 /**
  * 服务提供者，存储服务实体以及其返回
@@ -16,7 +13,6 @@ import java.util.Map;
  * @createDate 2020-9-23
  */
 public abstract class ServiceProvider {
-    protected static Logger log = LogManager.getLogger();
     private ServiceCenter serviceCenter;
     private InetSocketAddress socketAddress;
 

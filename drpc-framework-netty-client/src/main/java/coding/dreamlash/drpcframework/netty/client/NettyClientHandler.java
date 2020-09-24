@@ -6,9 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
@@ -18,7 +17,7 @@ import java.net.InetSocketAddress;
  * @createDate 2020-9-23
  */
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
-    private static Logger log = LogManager.getLogger();
+    private static Logger log = LoggerFactory.getLogger(NettyClientHandler.class);
     private final ResponseProvider responseProvider;
     private final ChannelProvider channelProvider;
 
@@ -37,7 +36,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             RpcResponse<Object> response = (RpcResponse<Object>) msg;
             responseProvider.complete(response);
         } else {
-            log.warn("response not instanceof RpcResponse for channel: %s", ctx.channel().remoteAddress());
+            log.warn("response not instanceof RpcResponse for channel: {}", ctx.channel().remoteAddress());
         }
     }
 
@@ -47,7 +46,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE) {
                 InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
-                log.printf(Level.DEBUG,"write idle happen %s:%d", address.getHostString(), address.getPort());
+                log.debug("write idle happen {}:{}", address.getHostString(), address.getPort());
                 Channel channel = channelProvider.get(address.getHostString(), address.getPort());
             }
         } else {
@@ -57,7 +56,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.warn("client catch exception：" + cause.getMessage());
+        log.warn("client catch exception：{}", cause.getMessage());
         cause.printStackTrace();
         ctx.close();
     }

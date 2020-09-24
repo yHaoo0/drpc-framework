@@ -7,9 +7,8 @@ import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
 import coding.dreamlash.drpcframework.rpc.core.transport.ClientTransport;
 import io.netty.channel.Channel;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
  * @createDate 2020-9-23
  */
 public class NettyClientTransport implements ClientTransport {
-    private static Logger log = LogManager.getLogger();
+    private static Logger log = LoggerFactory.getLogger(NettyClientTransport.class);
     private final ChannelProvider channelProvider;
     private final ResponseProvider responseProvider;
     private final ServiceCenter serviceCenter;
@@ -33,7 +32,7 @@ public class NettyClientTransport implements ClientTransport {
 
     @Override
     public RpcResponse<Object> sendRpcRequest(RpcRequest rpcRequest){
-        log.printf(Level.DEBUG, "start send request, serviceName: %s, id: %s", rpcRequest.getServiceName(), rpcRequest.getRequestId());
+        log.debug("start send request, serviceName: {}, id: {}", rpcRequest.getServiceName(), rpcRequest.getRequestId());
         InetSocketAddress address = serviceCenter.discoveryService(rpcRequest.toRpcServiceProperties());
         if(address == null){
             log.warn("not find service: " + rpcRequest.toRpcServiceProperties().toString());
@@ -50,7 +49,7 @@ public class NettyClientTransport implements ClientTransport {
         try {
             channel.writeAndFlush(rpcRequest).sync();
             RpcResponse<Object> response = future.get();
-            log.printf(Level.DEBUG, "end send request, serviceName: %s, id: %s", rpcRequest.getServiceName(), response.getRequestId());
+            log.debug("end send request, serviceName: {}, id: {}", rpcRequest.getServiceName(), response.getRequestId());
             responseProvider.remove(rpcRequest.getRequestId());
             return response;
         } catch (Exception e) {

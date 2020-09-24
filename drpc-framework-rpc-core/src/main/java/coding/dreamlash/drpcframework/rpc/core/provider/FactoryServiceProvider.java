@@ -3,6 +3,8 @@ package coding.dreamlash.drpcframework.rpc.core.provider;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @createDate 2020-9-23
  */
 public class FactoryServiceProvider extends ServiceProvider{
+    private final static Logger log = LoggerFactory.getLogger(FactoryServiceProvider.class);
     private Map<String, Method> serviceMap;
     private Object factory;
 
@@ -49,7 +52,7 @@ public class FactoryServiceProvider extends ServiceProvider{
         String serviceName = rpcServiceProperties.toString();
 
         if(serviceMap.containsKey(serviceName)){
-            log.warn("Duplicate service name, publishing failed: " + service.getClass().getName());
+            log.warn("Duplicate service name, publishing failed: {}", service.getClass().getName());
             return;
         }
 
@@ -57,9 +60,9 @@ public class FactoryServiceProvider extends ServiceProvider{
 
         if(sucess){
             serviceMap.put(serviceName, service);
-            log.info("Publishing service: "+ serviceName);
+            log.info("Publishing service:{} ", serviceName);
         } else {
-            log.warn("Failed to register service with the service center: " + serviceName);
+            log.warn("Failed to register service with the service center:{}", serviceName);
         }
     }
 }

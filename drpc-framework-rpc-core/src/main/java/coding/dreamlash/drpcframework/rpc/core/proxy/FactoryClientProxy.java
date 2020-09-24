@@ -4,6 +4,8 @@ import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.transport.ClientTransport;
 import org.apache.logging.log4j.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @createDate 2020-9-23
  */
 public class FactoryClientProxy extends ClientProxy{
+    private static final Logger log = LoggerFactory.getLogger(FactoryClientProxy.class);
     private Map<String, ProxyProperties> proxyMap;
     private Object factory;
 
@@ -55,7 +58,7 @@ public class FactoryClientProxy extends ClientProxy{
      */
     public void putProxy(String clientName, RpcServiceProperties properties, Class clazz, Method o) {
         if (proxyMap.containsValue(clientName)) {
-            log.warn("Duplicate client name, creating failed: " + clientName);
+            log.warn("Duplicate client name, creating failed: {}", clientName);
             return;
         }
         proxyMap.put(clientName, new ProxyProperties(properties, clazz, o));
