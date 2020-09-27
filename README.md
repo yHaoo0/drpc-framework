@@ -78,7 +78,8 @@
         * service : 服务名
         * version ： 版本号
         * group ： 组 默认 ""
-        * @return
+        * isSingleton ： 是否为单例模式，每次获取代理是否单例还是新新的实例 默认为true
+        * @return 必须为以实现的接口为返回类
         */
        @DrpcService(serviceName = "hello", version = "test")
        public HelloWorld hello(){
@@ -148,7 +149,8 @@
         * serviceName : 向服务中心申请的服务名
         * version ： 向服务中心申请的版本号
         * group ： 向服务中心申请的组 默认 ""
-        * @return
+        * isSingleton ： 是否为单例模式，每次获取代理是否单例还是新新的实例 默认为true
+        * @return 必须为实现的接口类
         */
        @DrpcClient(clientName = "hello1", serviceName = "hello", version = "test")
        public HelloWorld hello1(){

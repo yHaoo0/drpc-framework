@@ -2,10 +2,9 @@ package coding.dreamlash.drpcframework.netty.client;
 
 
 import coding.dreamlash.drpcframework.rpc.core.application.RpcClientApplication;
-import coding.dreamlash.drpcframework.rpc.core.factory.ClientScan;
+import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
+import coding.dreamlash.drpcframework.rpc.core.factory.DrpcScan;
 import coding.dreamlash.drpcframework.rpc.core.proxy.ClientProxy;
-import coding.dreamlash.drpcframework.rpc.core.proxy.FactoryClientProxy;
-import coding.dreamlash.drpcframework.rpc.core.proxy.SingletonClientProxy;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,19 +36,13 @@ public class NettyClientApplication implements RpcClientApplication{
     }
 
     @Override
-    public boolean enable(Properties properties, ServiceCenter serviceCenter, Object factory, boolean isSingleton) {
+    public boolean enable(Properties properties, ServiceCenter serviceCenter, Object factory) {
         if(!isEnable){
             clientTransport = new NettyClientTransport(channelProvider, responseProvider, serviceCenter);
-            if (isSingleton){
-                SingletonClientProxy singletonClientProxy = new SingletonClientProxy(clientTransport);
-                ClientScan.scan(factory, singletonClientProxy);
-                proxy = singletonClientProxy;
-            } else {
-                FactoryClientProxy factoryClientProxy = new FactoryClientProxy(clientTransport, factory);
-                ClientScan.scan(factory, factoryClientProxy);
-                proxy = factoryClientProxy;
-            }
-            isEnable = true;
+            ClientProxy proxy = new ClientProxy(this.clientTransport);
+            DrpcScan.clientScan(factory, proxy);
+            this.proxy = proxy;
+            this.isEnable = true;
         } else {
             logger.warn("Repeatedly enable NettyEnable");
         }
@@ -58,7 +51,12 @@ public class NettyClientApplication implements RpcClientApplication{
 
     @Override
     public <T> T getProxy(String clientName) {
-        return proxy.getProxy(clientName);
+        try {
+            return proxy.get(clientName);
+        } catch (DrpcException e) {
+            logger.warn(e.getMessage(), e.getCause());
+            return null;
+        }
     }
 
     @Override

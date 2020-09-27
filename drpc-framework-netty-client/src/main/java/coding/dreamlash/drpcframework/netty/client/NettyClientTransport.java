@@ -31,7 +31,7 @@ public class NettyClientTransport implements ClientTransport {
     }
 
     @Override
-    public RpcResponse<Object> sendRpcRequest(RpcRequest rpcRequest){
+    public RpcResponse<Object> sendRpcRequest(RpcRequest rpcRequest) throws DrpcException {
         log.debug("start send request, serviceName: {}, id: {}", rpcRequest.getServiceName(), rpcRequest.getRequestId());
         InetSocketAddress address = serviceCenter.discoveryService(rpcRequest.toRpcServiceProperties());
         if(address == null){

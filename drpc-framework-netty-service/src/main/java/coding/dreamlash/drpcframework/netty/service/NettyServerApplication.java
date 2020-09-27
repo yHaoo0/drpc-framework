@@ -1,10 +1,8 @@
 package coding.dreamlash.drpcframework.netty.service;
 
 import coding.dreamlash.drpcframework.rpc.core.application.RpcServiceApplication;
-import coding.dreamlash.drpcframework.rpc.core.factory.ServiceScan;
-import coding.dreamlash.drpcframework.rpc.core.provider.FactoryServiceProvider;
+import coding.dreamlash.drpcframework.rpc.core.factory.DrpcScan;
 import coding.dreamlash.drpcframework.rpc.core.provider.ServiceProvider;
-import coding.dreamlash.drpcframework.rpc.core.provider.SingletonServiceProvider;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,17 +32,11 @@ public class NettyServerApplication implements RpcServiceApplication {
     }
 
     @Override
-    public boolean enable(Object factory, boolean isSingleton) {
+    public boolean enable(Object factory) {
         if(!enable){
-            if(isSingleton){
-                SingletonServiceProvider singletonProvider = new SingletonServiceProvider(this.serviceCenter, address);
-                ServiceScan.scan(factory, singletonProvider);
-                this.serviceProvider = singletonProvider;
-            } else {
-                FactoryServiceProvider factoryProvider = new FactoryServiceProvider(this.serviceCenter, address, factory);
-                ServiceScan.scan(factory, factoryProvider);
-                this.serviceProvider = factoryProvider;
-            }
+            ServiceProvider provider = new ServiceProvider(this.serviceCenter, address);
+            DrpcScan.serviceScan(factory, provider);
+            this.serviceProvider = provider;
             this.serverHandler = new NettyServerHandler(this.serviceProvider);
             this.serverBoot = new NettyServerBoot(this.address, this.serviceProvider);
             serverBoot.start();

@@ -22,16 +22,16 @@ public class ResponseProvider {
         stroe = new ConcurrentHashMap<>();
     }
 
-    /**
-     * 标志响应体完成
-     * @param requestId
-     * @param futur
-     */
+
     public void creat(String requestId, CompletableFuture<RpcResponse<Object>> futur) {
         stroe.put(requestId, futur);
         log.debug("creat Completable futur : [requestId: {}]", requestId);
     }
 
+    /**
+     * 标志响应体完成
+     * @param response
+     */
     public void complete(RpcResponse response) {
         CompletableFuture<RpcResponse<Object>> future = stroe.get(response.getRequestId());
         future.complete(response);

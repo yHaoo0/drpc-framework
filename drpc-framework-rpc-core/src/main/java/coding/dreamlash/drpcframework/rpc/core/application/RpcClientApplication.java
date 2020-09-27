@@ -17,7 +17,7 @@ public interface RpcClientApplication {
      * @param serviceCenter
      * @return
      */
-    public boolean enable(Properties properties, ServiceCenter serviceCenter, Object factory, boolean isSingleton);
+    public boolean enable(Properties properties, ServiceCenter serviceCenter, Object factory);
 
     /**
      * 获取服务代理类

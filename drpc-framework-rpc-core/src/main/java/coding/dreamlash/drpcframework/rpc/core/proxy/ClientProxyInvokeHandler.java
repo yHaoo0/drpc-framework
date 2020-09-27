@@ -43,7 +43,7 @@ public class ClientProxyInvokeHandler implements InvocationHandler {
                 args,
                 RpcMessageType.RPC_REQUEST
         );
-
+        // 通信部分
         RpcResponse<Object> response = clientTransport.sendRpcRequest(rpcRequest);
         if (response == null || response.getCode() != RpcResponseCode.SUCCESS.code) {
             String message = response == null ? null : response.getMessage();

@@ -3,6 +3,7 @@ package coding.dreamlash.drpcframework.netty.service;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcRequest;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcResponse;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcResponseCode;
+import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 import coding.dreamlash.drpcframework.rpc.core.provider.ServiceProvider;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -83,9 +84,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             } else {
                 response = RpcResponse.fail(RpcResponseCode.FAIL);
             }
-        } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
-            log.warn("invoke mthod error:{}", e.getMessage());
-            log.warn(e.getStackTrace().toString());
+        } catch (NoSuchMethodException
+                | IllegalArgumentException
+                | InvocationTargetException
+                | IllegalAccessException
+                | DrpcException e) {
+            log.warn("invoke mthod error: " + e.getMessage(), e.getCause());
             response = RpcResponse.fail(RpcResponseCode.INVOKE_FAIL);
         }
 
@@ -111,9 +115,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    private Object invokeTargetMethod(RpcRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private Object invokeTargetMethod(RpcRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, DrpcException {
         Object result;
-        Object service = provider.getService(request.toRpcServiceProperties());
+        Object service = provider.get(request.toRpcServiceProperties());
         Method method = service.getClass().getMethod(request.getMethodName(), request.getParameType());
         result = method.invoke(service, request.getParame());
         return result;

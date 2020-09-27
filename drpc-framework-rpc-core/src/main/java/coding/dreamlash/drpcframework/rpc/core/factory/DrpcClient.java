@@ -13,8 +13,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DrpcClient {
-    String clientName();
+    String clientName() default "";
     String serviceName();
     String version();
     String group() default "";
+    boolean isSingleton() default true;
 }

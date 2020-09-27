@@ -3,6 +3,7 @@ package coding.dreamlash.drpcframework.rpc.core.transport;
 
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcRequest;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcResponse;
+import coding.dreamlash.drpcframework.rpc.core.exceptionn.DrpcException;
 
 /**
  * 客户端发送请求接口
@@ -15,6 +16,6 @@ public interface ClientTransport {
      * @param rpcRequest 请求体
      * @return
      */
-    RpcResponse<Object> sendRpcRequest(RpcRequest rpcRequest);
+    RpcResponse<Object> sendRpcRequest(RpcRequest rpcRequest) throws DrpcException;
 
 }

@@ -20,6 +20,6 @@ public class ServiceApplicationExample {
         // 3.1 实例化服务中心，传入配置属性以及服务中心
         RpcServiceApplication application = new NettyServerApplication(properties, serviceCenter);
         // 3.2 传入工厂的实例，启动服务监听
-        application.enable(new ServiceFactory("Service Application: "), true);
+        application.enable(new ServiceFactory("Service Application: "));
     }
 }

@@ -42,15 +42,10 @@ public class DrpcSimpleApplication {
     /**
      * 启动客户端监听
      * @param facory 客户端服务实体工厂
-     * @param isSingleton 是否启用服务实体单例模式
      */
-    public void enableClient(Object facory, boolean isSingleton){
-        client = new NettyClientApplication();
-        client.enable(properties, serviceCenter, facory, isSingleton);
-    }
-
     public void enableClient(Object facory){
-        this.enableClient(facory, true);
+        client = new NettyClientApplication();
+        client.enable(properties, serviceCenter, facory);
     }
 
     /**
@@ -77,15 +72,10 @@ public class DrpcSimpleApplication {
     /**
      * 启动服务端监听
      * @param factory 服务实体提供的工厂实例
-     * @param isSingleton 是否启用单例模式
      */
-    public void enableService(Object factory, boolean isSingleton){
-        server = new NettyServerApplication(properties, serviceCenter);
-        server.enable(factory, isSingleton);
-    }
-
     public void enableService(Object factory){
-        enableService(factory, true);
+        server = new NettyServerApplication(properties, serviceCenter);
+        server.enable(factory);
     }
 
     public ServiceCenter getServiceCenter() {

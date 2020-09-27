@@ -16,4 +16,5 @@ public @interface DrpcService {
     String serviceName();
     String version();
     String group() default "";
+    boolean isSingleton() default true;
 }

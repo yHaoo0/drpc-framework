@@ -21,7 +21,7 @@ public class ClientApplicationExample {
         // 3.1 实例化客户端
         RpcClientApplication application = new NettyClientApplication();
         // 3.2 传入配置属性，服务中心以及工厂实体
-        application.enable(properties, serviceCenter, new ClientFactory(), true);
+        application.enable(properties, serviceCenter, new ClientFactory());
 
         // 获取服务代理
         HelloWorld hello1 = application.getProxy("hello1");

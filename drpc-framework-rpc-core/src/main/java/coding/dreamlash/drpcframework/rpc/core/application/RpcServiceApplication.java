@@ -10,6 +10,6 @@ public interface RpcServiceApplication {
      * 注册服务，启用服务器监听
      * @return
      */
-    public boolean enable(Object factory, boolean isSingleton);
+    public boolean enable(Object factory);
 
 }
