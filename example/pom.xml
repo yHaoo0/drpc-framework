@@ -15,6 +15,7 @@
         <module>example-api</module>
         <module>example-service</module>
         <module>example-client</module>
+        <module>example-config</module>
     </modules>
 
     <dependencies>

@@ -2,22 +2,25 @@ package coding.dreamlash.drpcframework.nacos.config;
 
 import coding.dreamlash.drpcframework.common.configfile.context.ConfigContext;
 import coding.dreamlash.drpcframework.common.configfile.context.ConfigContextType;
-import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
 
 import java.io.IOException;
 
-public class NacosConfigContext implements ConfigContext {
-    private final String dataId;
-    private final String group;
+/**
+ * nacos 配置文件属性
+ * @author yhao
+ */
+public class NacosContext implements ConfigContext {
+    public final String dataId;
+    public final String group;
     private final ConfigContextType type;
-    private final ConfigService service;
+    private NacosConfigContextManager manager;
 
-    public NacosConfigContext(String dataId, String group, ConfigContextType type, ConfigService service) {
+    public NacosContext(String dataId, String group, ConfigContextType type, NacosConfigContextManager manager) {
         this.dataId = dataId;
         this.group = group;
         this.type = type;
-        this.service = service;
+        this.manager = manager;
     }
 
     @Override
@@ -28,9 +31,9 @@ public class NacosConfigContext implements ConfigContext {
     @Override
     public byte[] getContext() throws IOException {
         try {
-            return service.getConfig(dataId, group, 3000).getBytes();
+            return manager.get(this).getBytes();
         } catch (NacosException e) {
-            throw new IOException(e.getMessage());
+            throw new IOException("this Exception for NacosException, " + e.getMessage());
         }
     }
 }

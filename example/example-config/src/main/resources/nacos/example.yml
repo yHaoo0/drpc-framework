@@ -1,0 +1,11 @@
+# 该配置文件应该在naocos配置中心中
+# dataid : example group : DEFAULT_GROUP
+name: nacosname
+age: 18
+# nacos扫描配置，
+nacosConfigs:
+  -
+    id: example1 # nacos配置中心中对应的dataId，同时也是登录和查询的id
+    group: DEFAULT_GROUP # nacos配置中心的group
+    type: YAML # 解析类型
+    isMemory: true #是否将内容写入内存，如果不写入，每次获取都从nacos配置中心中获取新的配置信息

@@ -1,0 +1,13 @@
+name: localname
+age: 18
+# 本地扫描配置
+localConfigs:
+  -
+    id: local1 #查找配置文件的id值，如果重复将会覆盖原有的配置文件
+    filePath: local1.yaml #配置文件的相对资源路径
+    type: YAML # 配置文件的解析类型（格式）
+    isMemory: false # 是否将内容写入内存，如果不写入，每次获取都从文件中重新获取（IO操作） 默认true
+  -
+    id: local2
+    filePath: temp/local2.properties
+    type: PROPS

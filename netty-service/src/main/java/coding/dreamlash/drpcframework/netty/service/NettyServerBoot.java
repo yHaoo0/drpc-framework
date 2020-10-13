@@ -30,8 +30,10 @@ public class NettyServerBoot {
     private static Logger log = LoggerFactory.getLogger(NettyServerBoot.class);
     private InetSocketAddress socketAddress;
     private ServiceProvider serviceProvider;
+    private NettyServerProps props;
 
-    public NettyServerBoot(InetSocketAddress socketAddress, ServiceProvider serviceProvider) {
+    public NettyServerBoot(NettyServerProps props, InetSocketAddress socketAddress, ServiceProvider serviceProvider) {
+        this.props = props;
         this.socketAddress = socketAddress;
         this.serviceProvider = serviceProvider;
     }
@@ -48,12 +50,12 @@ public class NettyServerBoot {
                     .channel(NioServerSocketChannel.class)
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
-                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .option(ChannelOption.SO_BACKLOG, props.backlog)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
+                            ch.pipeline().addLast(new IdleStateHandler(props.idleReader, props.idleWrite, props.idleAll, TimeUnit.SECONDS));
                             ch.pipeline().addLast("decoder", new KryoDecoder());
                             ch.pipeline().addLast("encoder", new KryoEncoder());
                             ch.pipeline().addLast(new NettyServerHandler(serviceProvider));

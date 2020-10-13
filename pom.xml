@@ -19,15 +19,15 @@
     </developers>
 
     <modules>
-        <module>drpc-framework-common</module>
-        <module>drpc-framework-rpc-core</module>
-        <module>drpc-framework-nacos-registry</module>
-        <module>drpc-framework-netty-client</module>
-        <module>drpc-framework-netty-kryo</module>
-        <module>drpc-framework-netty-service</module>
-        <module>drpc-framework-simple-start</module>
-        <module>drpc-framework-example</module>
-        <module>drpc-framework-nacos-config</module>
+        <module>common</module>
+        <module>rpc-core</module>
+        <module>netty-kryo</module>
+        <module>netty-service</module>
+        <module>netty-client</module>
+        <module>nacos-registry</module>
+        <module>nacos-config</module>
+        <module>simple-start</module>
+        <module>example</module>
     </modules>
 
     <properties>
@@ -90,6 +90,11 @@
                 <artifactId>drpc-framework-netty-kryo</artifactId>
                 <version>${drpc.version}</version>
             </dependency>
+            <dependency>
+                <groupId>coding.dream-lash</groupId>
+                <artifactId>drpc-framework-common</artifactId>
+                <version>${drpc.version}</version>
+            </dependency>
 
             <!-- nacos -->
             <dependency>
@@ -110,7 +115,7 @@
                 <version>${kryo.version}</version>
             </dependency>
 
-             <!-- jackson-dataformats -->
+             <!-- jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-properties</artifactId>

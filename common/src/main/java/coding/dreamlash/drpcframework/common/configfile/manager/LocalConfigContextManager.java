@@ -7,110 +7,84 @@ import coding.dreamlash.drpcframework.common.configfile.context.FilePathContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
-public class LocalConfigContextManager implements ConfigContextManager{
+/**
+ * 读取和扫描本地配置文件的工具类
+ * 读取的配置文件登录到ConfigContextManager
+ * @author yhao
+ */
+public class LocalConfigContextManager extends ConfigContextManager{
     private final static Logger log = LoggerFactory.getLogger(LocalConfigContextManager.class);
 
-    public static boolean putByLocalFile(String filePath){
-        return putByLocalFile(filePath, filePath);
+    public LocalConfigContextManager() {
     }
 
-    public static boolean putByLocalFile(String dataId, String filePath){
-        return putByLocalFile(dataId, filePath, true);
-    }
+    /**
+     * 将配置文件封装为ConfigContext 并存储到ConfigContextManger
+     * @param dataId 登录到ConfigContextManger的唯一key 如果重复则覆盖
+     * @param filePath 相对类资源路径下的文件路径
+     * @param type 文件格式 POPRS or YAML
+     * @param isMemory 是否将一次性将内容写入内存中
+     */
+    public static void load(String dataId, String filePath, ConfigContextType type, boolean isMemory){
 
-    public static boolean putByLocalFile(String dataId, String filePath, boolean inMemory){
-        ConfigContextType type = null;
-        if(filePath.endsWith(".properties")){
-            type = ConfigContextType.PROPS;
-        } else if (filePath.endsWith(".yaml")){
-            type = ConfigContextType.YAML;
+        if(ClassLoader.getSystemResource(filePath) == null){
+            log.warn("not found the filePath: {} on stsren resource. the config dataId: {} load faile", filePath, dataId);
+            return;
+        }
+
+        ConfigContext config;
+        if(isMemory){
+            try {
+                config = BytesContext.creatByFilePath(filePath, type);
+            } catch (IOException e) {
+                log.warn("updata config data faile, id:{}, message:",dataId, e.getMessage());
+                return;
+            }
         } else {
-            log.warn("Config filePath [{}] load error, Only supports properties and yml format", filePath);
-            return false;
+            config = new FilePathContext(filePath, type);
         }
 
-        return putByLocalFile(new LocalFileProps(dataId, filePath, type, inMemory));
+        STORE.put(dataId, config);
+        log.info("updata config data. id:{}", dataId);
     }
 
-    public static boolean putByLocalFile(String dataId, String filePath, ConfigContextType type){
-        return putByLocalFile(new LocalFileProps(dataId, filePath, type, true));
-    }
+    /**
+     * 序列化指定文件中的localConfigs配置，并扫描localConfigs下配置的配置文件和登录
+     * @param filePath
+     * @param type
+     */
+    public static void scan(String filePath, ConfigContextType type){
+        URL url = ClassLoader.getSystemResource(filePath);
+        LocalConfigScan propsScan = null;
 
-    public static boolean putByLocalFile(String dataId, String filePath, ConfigContextType type, boolean inMemory){
-        return putByLocalFile(new LocalFileProps(dataId, filePath, type, inMemory));
-    }
-
-    public static boolean putByLocalFile(LocalFileProps props){
-        URL url = ClassLoader.getSystemResource(props.filePath);
-        if(url == null){
-            log.warn("not found file: {}", props.filePath);
-            return false;
+        try {
+            switch (type){
+                case PROPS:
+                    propsScan = PROPS_MAPPER.readValue(url, LocalConfigScan.class);
+                    break;
+                case YAML:
+                    propsScan = YAML_MAPPER.readValue(url, LocalConfigScan.class);
+                    break;
+            }
+        } catch (Exception e) {
+            log.warn("scans local config data fail, path: {}, message: {}", filePath, e.getMessage());
         }
 
-        if(props.dataId == null){
-            props.dataId = props.filePath;
+        if(propsScan == null || propsScan.localConfigs == null){
+            return;
         }
-        if(props.type == null){
-            if(props.filePath.endsWith(".properties")){
-                props.type = ConfigContextType.PROPS;
-            } else if (props.filePath.endsWith(".yaml")){
-                props.type = ConfigContextType.YAML;
+
+        for(LocalConfigScabProps prop: propsScan.localConfigs){
+            if(prop.checkNotNull()){
+                load(prop.id, prop.filePath, prop.type, prop.isMemory);
             } else {
-                log.warn("Config filePath [{}] load error, Only supports properties and yml format", props.filePath);
-                return false;
+                log.warn("the config data load fail, id: {}, message: {}", prop.id, "id, filePath or type cann't null");
             }
-        }
-
-        try{
-            ConfigContext context;
-            if(props.inMemory){
-                context = createBytesContext(url.getPath(), props.type);
-            } else {
-                context = createFilePathContext(url.getPath(), props.type);
-            }
-
-            if(STORE.containsKey(props.dataId)){
-                log.info("updata dataId [{}]", props.dataId);
-            }else {
-                log.info("Config dataId [{}] sucess, file name: [{}]", props.dataId, props.filePath);
-            }
-
-            STORE.put(props.dataId, context);
-            return true;
-        } catch (IOException e){
-            log.warn("Config dataId [{}] load error, exception: {} ", props.dataId, e.getMessage());
-            return false;
-        }
-    }
-
-    public static void scanLocalFile(LocalFileScan scan){
-        for(LocalFileProps props: scan.localConfig){
-            putByLocalFile(props);
-        }
-    }
-
-    private static BytesContext createBytesContext(String path, ConfigContextType type) throws IOException {
-        try (InputStream stream = new FileInputStream(path)){
-            byte[] data = new byte[stream.available()];
-            return new BytesContext(data, type);
-        }
-    }
-
-    private static FilePathContext createFilePathContext(String path, ConfigContextType type){
-        return new FilePathContext(path, type);
-    }
-
-
-    public class LocalFileScan{
-        public List<LocalFileProps> localConfig;
-
-        public LocalFileScan() {
         }
     }
 }
+
+

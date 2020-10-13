@@ -1,5 +1,6 @@
 package coding.dreamlash.drpcframework.nacos.registry;
 
+import coding.dreamlash.drpcframework.common.NacosProps;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 import coding.dreamlash.drpcframework.rpc.core.registry.ServiceCenter;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -19,14 +20,16 @@ import java.util.Properties;
 public class NacosServicesCenter implements ServiceCenter {
     private static final Logger log = LoggerFactory.getLogger(NacosServicesCenter.class);
     private boolean enable = false;
+    private NacosProps props;
     private NamingService naming ;
 
-    public NacosServicesCenter() {
+    public NacosServicesCenter(NacosProps props) {
+        this.props = props;
     }
 
     @Override
-    public boolean enable(Properties properties) {
-        Properties nacosProperties = NacosToProperties.nacosProperties(properties);
+    public boolean enable() {
+        Properties nacosProperties = props.toProperties();
         if(!enable){
             try {
                 naming = NamingFactory.createNamingService(nacosProperties);

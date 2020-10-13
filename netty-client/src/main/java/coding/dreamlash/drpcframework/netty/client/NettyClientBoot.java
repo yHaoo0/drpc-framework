@@ -27,16 +27,16 @@ public class NettyClientBoot {
     private Bootstrap bootstrap = new Bootstrap();
     private NioEventLoopGroup group = new NioEventLoopGroup();
 
-    public NettyClientBoot(NettyClientHandler handler) {
+    public NettyClientBoot(NettyClientProps props, NettyClientHandler handler) {
         bootstrap.group(group)
                 .channel(NioSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, props.timeout)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         ChannelPipeline pipeline = socketChannel.pipeline();
-                        pipeline.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
+                        pipeline.addLast(new IdleStateHandler(props.idleReader, props.idleWrite, props.idleAll, TimeUnit.SECONDS));
                         pipeline.addLast("encoder", new KryoEncoder());
                         pipeline.addLast("decoder", new KryoDecoder());
                         pipeline.addLast(handler.clone());

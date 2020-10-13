@@ -18,7 +18,6 @@ import java.util.Properties;
  */
 public class NettyClientApplication implements RpcClientApplication{
     private static Logger logger = LoggerFactory.getLogger(NettyClientApplication.class);
-    private boolean isEnable = false;
     private ChannelProvider channelProvider;
     private ResponseProvider responseProvider;
     private NettyClientBoot nettyClientBoot;
@@ -26,17 +25,19 @@ public class NettyClientApplication implements RpcClientApplication{
     private NettyClientTransport clientTransport;
     private ClientProxy proxy;
 
-    public NettyClientApplication() {
+    private boolean isEnable = false;
+
+    public NettyClientApplication(NettyClientProps props) {
         channelProvider = new ChannelProvider();
         responseProvider = new ResponseProvider();
         nettyClientHandler = new NettyClientHandler(responseProvider, channelProvider);
-        nettyClientBoot = new NettyClientBoot(nettyClientHandler);
+        nettyClientBoot = new NettyClientBoot(props, nettyClientHandler);
 
         channelProvider.setClient(nettyClientBoot);
     }
 
     @Override
-    public boolean enable(Properties properties, ServiceCenter serviceCenter, Object factory) {
+    public boolean enable(ServiceCenter serviceCenter, Object factory) {
         if(!isEnable){
             clientTransport = new NettyClientTransport(channelProvider, responseProvider, serviceCenter);
             ClientProxy proxy = new ClientProxy(this.clientTransport);

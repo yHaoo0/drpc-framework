@@ -30,6 +30,11 @@
         </dependency>
         <dependency>
             <groupId>coding.dream-lash</groupId>
+            <artifactId>drpc-framework-nacos-config</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>coding.dream-lash</groupId>
             <artifactId>drpc-framework-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

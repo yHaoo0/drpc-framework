@@ -13,11 +13,10 @@ import java.util.Properties;
 public interface RpcClientApplication {
     /**
      * 初始化客户端，如果以及初始化，返回true， 否则开始初始化，成功返回true
-     * @param properties
      * @param serviceCenter
      * @return
      */
-    public boolean enable(Properties properties, ServiceCenter serviceCenter, Object factory);
+    public boolean enable(ServiceCenter serviceCenter, Object factory);
 
     /**
      * 获取服务代理类

@@ -14,7 +14,7 @@ public class ClientFactory {
      * version ： 向服务中心申请的版本号
      * group ： 向服务中心申请的组 默认 ""
      * isSingleton : 该对象是否使用单例模式
-     * @return
+     * @return 当返回失败时调用的实体
      */
     @DrpcClient(clientName = "hello1", serviceName = "hello", version = "test", isSingleton = true)
     public HelloWorld hello1(){

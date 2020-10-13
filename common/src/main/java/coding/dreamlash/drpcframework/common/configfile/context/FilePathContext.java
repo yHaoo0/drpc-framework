@@ -4,7 +4,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-
+/**
+ * 存储配置文件位置，每次读取时使用IO操作重新读取
+ * @author yhao
+ */
 public class FilePathContext implements ConfigContext{
     private final String path;
     public final ConfigContextType type;
@@ -21,10 +24,6 @@ public class FilePathContext implements ConfigContext{
 
     @Override
     public byte[] getContext() throws IOException {
-        try (InputStream stream = new FileInputStream(path)){
-            byte[] data = new byte[stream.available()];
-            stream.read(data);
-            return data;
-        }
+        return ConfigContext.readFile(path);
     }
 }

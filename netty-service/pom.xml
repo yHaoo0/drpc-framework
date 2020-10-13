@@ -22,6 +22,10 @@
     <dependencies>
         <dependency>
             <groupId>coding.dream-lash</groupId>
+            <artifactId>drpc-framework-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>coding.dream-lash</groupId>
             <artifactId>drpc-framework-rpc-core</artifactId>
         </dependency>
         <dependency>

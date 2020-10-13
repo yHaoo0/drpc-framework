@@ -3,7 +3,6 @@ package coding.dreamlash.drpcframework.rpc.core.registry;
 import coding.dreamlash.drpcframework.rpc.core.enitiy.RpcServiceProperties;
 
 import java.net.InetSocketAddress;
-import java.util.Properties;
 
 /**
  *  服务注册，发现，注销的接口
@@ -37,8 +36,8 @@ public interface ServiceCenter {
 
     /**
      * 启动服务的统一接口
-     * @param properties 配置参数
+     * @param props 配置参数
      * @return
      */
-    boolean enable(Properties properties);
+    boolean enable();
 }

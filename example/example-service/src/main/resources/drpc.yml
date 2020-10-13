@@ -1,0 +1,6 @@
+nacos.serverAddr: 127.0.0.1:8848
+
+netty:
+  service:
+    host: 127.0.0.1
+    port: 8090
