@@ -10,6 +10,7 @@
 * 基于Kyro序列化
 * 基于Java动态代理和反射机制
 * 基于jackson序列化
+* 基于Nacos配置中心和类资源配置文件
 
 ## 项目运行
 你可以查看drpc-framework-example里面示例学习使用该框架。
